@@ -3,3 +3,7 @@
 @using WebTodoList.Data
 @namespace WebTodoList.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using WebTodoList.Authorization;
+@using Microsoft.AspNetCore.Authorization
+@using WebTodoList.Models
+@inject IAuthorizationService AuthorizationService

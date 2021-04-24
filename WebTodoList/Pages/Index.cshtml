@@ -1,10 +1,77 @@
-﻿@page
-@model IndexModel
+@page
+@model WebTodoList.Pages.IndexModel
+
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Index";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoItem[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoItem[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoItem[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoItem[0].AddedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoItem[0].DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoItem[0].DoneDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoItem[0].Done)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TodoItem) {
+        <tr>
+            @if ((await AuthorizationService.AuthorizeAsync(
+                   User, item,
+                   TodoOperations.Update)).Succeeded)
+            {
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoneDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Done)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ItemId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ItemId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ItemId">Delete</a>
+            </td>
+            }
+        </tr>
+}
+    </tbody>
+</table>
