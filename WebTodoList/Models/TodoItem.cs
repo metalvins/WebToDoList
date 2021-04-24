@@ -26,6 +26,13 @@ namespace WebTodoList.Models
 		[Display(Name = "Date Completed")]
 		public DateTime DoneDate { get; set; } = DateTime.Now;
 
-		public Boolean Done { get; set; } = false;
+		public Status Done { get; set; }
+	}
+
+	public enum Status
+	{
+		Submitted,
+		Approved,
+		Rejected
 	}
 }

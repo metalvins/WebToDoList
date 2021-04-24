@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebTodoList.Models;
 
 namespace WebTodoList.Data
 {
@@ -12,5 +13,7 @@ namespace WebTodoList.Data
             : base(options)
         {
         }
+
+        public DbSet<TodoItem> Blogs { get; set; }
     }
 }
