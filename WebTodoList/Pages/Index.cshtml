@@ -68,8 +68,12 @@
         </td>
         <td>
             <a asp-page="./Edit" asp-route-id="@item.ItemId">Edit</a> |
-            <a asp-page="./Details" asp-route-id="@item.ItemId">Details</a> |
-            <a asp-page="./Delete" asp-route-id="@item.ItemId">Delete</a>
+            <a class="btn btn-primary btn-sm" asp-page="./Complete" onclick="@item.ItemId"><i class="fas fa-user"></i>Complete</a> |
+            <form method="post">
+                <button type="submit" asp-route-data="@item.ItemId">Try</button>
+            </form>
+            |
+                <a asp-page="./Delete" asp-route-id="@item.ItemId">Delete</a>
         </td>
         }
                 </tr>

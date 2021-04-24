@@ -15,6 +15,8 @@ namespace WebTodoList.Authorization
           new OperationAuthorizationRequirement { Name = Constants.DeleteOperationName };
         public static OperationAuthorizationRequirement Reset =
           new OperationAuthorizationRequirement { Name = Constants.ResetOperationName };
+        public static OperationAuthorizationRequirement Complete =
+          new OperationAuthorizationRequirement { Name = Constants.CompleteOperationName };
     }
 
     public class Constants
@@ -24,5 +26,6 @@ namespace WebTodoList.Authorization
         public static readonly string UpdateOperationName = "Update";
         public static readonly string DeleteOperationName = "Delete";
         public static readonly string ResetOperationName = "Reset";
+        public static readonly string CompleteOperationName = "Complete";
     }
 }

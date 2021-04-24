@@ -26,5 +26,11 @@ namespace WebTodoList.Models
 		public DateTime DoneDate { get; set; } = DateTime.Now;
 
 		public TodoStatus Done { get; set; }
+
+		public int setCompleted()
+        {
+			Done = TodoStatus.Completed;
+			return (int)Done;
+        }
 	}
 }

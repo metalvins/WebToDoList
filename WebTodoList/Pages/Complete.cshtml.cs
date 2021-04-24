@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,33 +13,43 @@ using WebTodoList.Models;
 
 namespace WebTodoList.Pages
 {
-    [AllowAnonymous]
-    public class IndexModel : TodoModel
+    public class CompleteModel : TodoModel
     {
         private readonly WebTodoList.Data.ApplicationDbContext _context;
 
-        public IndexModel(ApplicationDbContext context,
+        public CompleteModel(ApplicationDbContext context,
         IAuthorizationService authorizationService,
         UserManager<IdentityUser> userManager)
-        : base(context, authorizationService, userManager) {
+        : base(context, authorizationService, userManager)
+        {
             _context = context;
         }
 
-        public IList<TodoItem> TodoItem { get;set; }
+        [BindProperty]
+        public TodoItem TodoItem { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            var todoItems = from c in Context.Blogs
-                           select c;
+            TodoItem = await _context.Blogs.FirstOrDefaultAsync(
+                                             m => m.ItemId == id);
 
-            var currentUserId = UserManager.GetUserId(User);
+            if (TodoItem == null)
+            {
+                return NotFound();
+            }
 
-            // Only items owned by user will be shown
+            var isAuthorized = await AuthorizationService.AuthorizeAsync(
+                                                      User, TodoItem,
+                                                      TodoOperations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
 
-            todoItems = todoItems.Where(c => c.Email == currentUserId);
-            TodoItem = await _context.Blogs.ToListAsync();
+            return Page();
         }
-        public async Task<ActionResult> OnPostAsync(int? id)
+
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             // Fetch Item from DB to get UserID.
             var todo = await _context
@@ -58,15 +68,11 @@ namespace WebTodoList.Pages
             {
                 return Forbid();
             }
-            /*
-            List<TodoItem> Items = new List<TodoItem>(TodoItem);
-            TodoItem Item = Items.Find(x => x.ItemId == id);
-            Item.ItemId = todo.ItemId;
-            */
-            todo.Done = TodoStatus.Completed;
-            _context.Attach(todo).State = EntityState.Modified;
 
-            /*
+            TodoItem.ItemId = todo.ItemId;
+
+            _context.Attach(TodoItem).State = EntityState.Modified;
+
             if (TodoItem.Done == TodoStatus.NotCompleted)
             {
                 // If task is edited after completion,
@@ -76,14 +82,14 @@ namespace WebTodoList.Pages
                                         TodoOperations.Complete);
                 TodoItem.Done = TodoStatus.Completed;
             }
-            */
+
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TodoItemExists(todo.ItemId))
+                if (!TodoItemExists(TodoItem.ItemId))
                 {
                     return NotFound();
                 }

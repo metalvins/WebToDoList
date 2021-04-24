@@ -1,0 +1,14 @@
+﻿@page
+@model WebTodoList.Pages.CompleteModel
+@{
+    ViewData["Title"] = "Complete";
+}
+
+<h1>Complete</h1>
+
+<h3>This task will be marked as completed.</h3>
+<form method="post">
+    <input type="hidden" asp-for="TodoItem.ItemId" />
+    <input type="submit" value="Complete" class="btn btn-primary" /> |
+    <a asp-page="./Index">Back to List</a>
+</form>
