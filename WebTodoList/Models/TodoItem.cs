@@ -8,7 +8,6 @@ namespace WebTodoList.Models
 		[Key]
 		public int ItemId { get; set; }
 
-		[DataType(DataType.EmailAddress)]
 		public String Email { get; set; }
 
 		[MaxLength(100)]

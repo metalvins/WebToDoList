@@ -15,11 +15,5 @@ namespace WebTodoList.Data
         }
 
         public DbSet<TodoItem> Blogs { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new DoneTitleConfiguration());
-        }
     }
 }

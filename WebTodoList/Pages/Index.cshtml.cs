@@ -12,6 +12,7 @@ using WebTodoList.Models;
 
 namespace WebTodoList.Pages
 {
+    [AllowAnonymous]
     public class IndexModel : TodoModel
     {
         private readonly WebTodoList.Data.ApplicationDbContext _context;

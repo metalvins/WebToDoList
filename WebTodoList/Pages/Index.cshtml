@@ -1,10 +1,10 @@
 @page
 @model WebTodoList.Pages.IndexModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+@{ ViewData["Title"] = "Index"; }
 
+@if (User.Identity.IsAuthenticated)
+{
 <h1>Index</h1>
 
 <p>
@@ -38,40 +38,47 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.TodoItem) {
-        <tr>
-            @if ((await AuthorizationService.AuthorizeAsync(
-                   User, item,
-                   TodoOperations.Update)).Succeeded)
-            {
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DoneDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Done)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ItemId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ItemId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ItemId">Delete</a>
-            </td>
-            }
-        </tr>
-}
+        @foreach (var item in Model.TodoItem)
+        {
+            <tr>
+        @if ((await AuthorizationService.AuthorizeAsync(
+             User, item,
+             TodoOperations.Update)).Succeeded)
+        {
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DoneDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Done)
+        </td>
+        <td>
+            <a asp-page="./Edit" asp-route-id="@item.ItemId">Edit</a> |
+            <a asp-page="./Details" asp-route-id="@item.ItemId">Details</a> |
+            <a asp-page="./Delete" asp-route-id="@item.ItemId">Delete</a>
+        </td>
+        }
+                </tr>
+                }
     </tbody>
-</table>
+    </table>
+    }else{
+    <div class="text-center">
+        <h1 class="display-4">Welcome to the ToDo List Applicaton</h1>
+        <p>Easily track your pending tasks with this application built using ASP .NET Core.</p>
+    </div>
+    }
